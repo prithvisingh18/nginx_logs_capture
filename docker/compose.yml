@@ -1,0 +1,38 @@
+version: "3.8"
+
+services:
+  nginx:
+    build:
+      context: ..
+      dockerfile: ./docker/nginx/Dockerfile
+    container_name: nginx
+    restart: always
+    ports:
+      - "8888:8888"
+
+  server:
+    build:
+      context: ..
+      dockerfile: ./docker/server/Dockerfile
+    container_name: server
+    restart: always
+    ports:
+      - "8181:8181"
+    volumes:
+      - ../server/:/usr/src/server
+
+  benchmark:
+    build:
+      context: ..
+      dockerfile: ./docker/benchmark/Dockerfile
+    container_name: benchmark
+    restart: always
+    volumes:
+      - ../benchmark/:/usr/src/benchmark
+
+  ubuntu:
+    image: ubuntu
+    container_name: ubuntu_test
+    command: sleep infinity
+    ports:
+      - 80:80
